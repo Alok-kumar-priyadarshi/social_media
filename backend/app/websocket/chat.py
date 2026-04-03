@@ -54,7 +54,7 @@ async def websocket_endpoint(websocket: WebSocket):
 
             #  Typing event
             if message_data.get("type") == "typing":
-                await manager.publish_message(
+                manager.publish_message(
                     message_data["to_user_id"],
                     json.dumps({
                         "type": "typing",
@@ -65,7 +65,7 @@ async def websocket_endpoint(websocket: WebSocket):
 
             #  Seen event
             if message_data.get("type") == "seen":
-                await manager.publish_message(
+                manager.publish_message(
                     message_data["to_user_id"],
                     json.dumps({
                         "type": "seen",
@@ -92,7 +92,7 @@ async def websocket_endpoint(websocket: WebSocket):
                 })
 
                 #  Instant feedback to sender
-                await manager.send_message(user_id, payload)
+                manager.send_message(user_id, payload)
 
                 #  Publish to Redis for receiver(s)
                 await manager.publish_message(to_user_id, payload)

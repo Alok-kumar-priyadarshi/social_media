@@ -34,8 +34,8 @@ class ConnectionManager:
                 await connection.send_text(message)
         
             
-    async def publish_message(self, to_user_id: int, message: str):
-        await redis_client.publish(
+    def publish_message(self, to_user_id: int, message: str):
+        redis_client.publish(
             "chat_channel",
             json.dumps({
                 "to_user_id": to_user_id,
