@@ -31,6 +31,8 @@ from fastapi.middleware.cors import CORSMiddleware
 
 import os
 
+from sqlalchemy import text
+
 origins = os.getenv("CORS_ORIGINS")
 
 app = FastAPI()
@@ -65,8 +67,7 @@ app.include_router(like_router)
 app.include_router(message_router)
 app.include_router(comment_router)
 
-# app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
-
+from app.db.database import get_db
 app.include_router(chat_router)
 
 
@@ -86,4 +87,12 @@ def protected(user=Depends(get_current_user)):
             "email": user.email
         }
     }
+    
+@app.get("/test-db")
+def test_db(db: Session = Depends(get_db)):
+    try:
+        db.execute(text("SELECT 1"))
+        return {"status": "DB working"}
+    except Exception as e:
+        return {"error": str(e)}
 
