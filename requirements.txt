@@ -1,0 +1,16 @@
+fastapi
+uvicorn
+uvicorn[standard]
+websockets
+wsproto
+redis
+sqlalchemy
+psycopg2-binary
+alembic
+python-dotenv
+passlib[bcrypt]
+python-jose
+pydantic[email]
+email-validator
+python-multipart
+imagekitio

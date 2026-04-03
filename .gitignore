@@ -1,0 +1,40 @@
+# ======================
+# Python
+# ======================
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+venv/
+.env
+
+# ======================
+# Database / Alembic
+# ======================
+*.db
+*.sqlite3
+
+# ======================
+# Logs
+# ======================
+*.log
+
+# ======================
+# OS files
+# ======================
+.DS_Store
+Thumbs.db
+
+# ======================
+# Editor / IDE
+# ======================
+.vscode/
+.idea/
+
+# ======================
+# Node (if frontend later added here)
+# ======================
+node_modules/
+dist/
