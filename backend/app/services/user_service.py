@@ -3,6 +3,7 @@
 from sqlalchemy.orm import Session
 from app.models.user import User
 from app.core.security import hash_password , verify_password
+from sqlalchemy.exc import IntegrityError
 
 def create_user(db:Session, username:str , email:str, password:str):
     
@@ -22,10 +23,15 @@ def create_user(db:Session, username:str , email:str, password:str):
     )
     
     db.add(new_user)
-    db.commit()
-    db.refresh(new_user)
+    try:
+        db.commit()
+        db.refresh(new_user)
+        return new_user
 
-    return new_user
+    except IntegrityError as e:
+        db.rollback()
+        print("INTEGRITY ERROR:", str(e))
+        return None
 
 def authenticate_user(db: Session, username: str, password: str):
     user = db.query(User).filter(User.username == username).first()
