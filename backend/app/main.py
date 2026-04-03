@@ -29,14 +29,17 @@ from app.websocket.redis_listener import start_redis_listener
 
 from fastapi.middleware.cors import CORSMiddleware
 
+import os
+
+origins = os.getenv("CORS_ORIGINS")
 
 app = FastAPI()
 
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=False,
+    allow_origins=origins,
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
