@@ -1,13 +1,11 @@
-# This file listens to Redis pub/sub and forwards messages to users
-
 import json
+import asyncio
 from app.core.redis import redis_client
 from app.websocket.manager import manager
 
 print("🔥 Redis listener started")
 
-
-def start_redis_listener():
+def start_redis_listener(loop):
     pubsub = redis_client.pubsub()
     pubsub.subscribe("chat_channel")
 
@@ -20,8 +18,9 @@ def start_redis_listener():
         to_user_id = data["to_user_id"]
         text = data["message"]
 
-        # Send to connected user (if on this server)
-        import asyncio
-        asyncio.run(manager.send_message(to_user_id, text))
-        
+        asyncio.run_coroutine_threadsafe(
+            manager.send_message(to_user_id, text),
+            loop
+        )
+
         print("📥 Received from Redis:", data)

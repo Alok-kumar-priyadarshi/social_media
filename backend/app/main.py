@@ -26,6 +26,7 @@ from app.api.routes.comment import router as comment_router
 from app.websocket.chat import router as chat_router
 import threading
 from app.websocket.redis_listener import start_redis_listener
+import asyncio
 
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -73,8 +74,14 @@ app.include_router(chat_router)
 
 
 @app.on_event("startup")
-def startup_event():
-    thread = threading.Thread(target=start_redis_listener, daemon=True)
+async def startup_event():
+    loop = asyncio.get_running_loop()
+
+    thread = threading.Thread(
+        target=start_redis_listener,
+        args=(loop,),  
+        daemon=True
+    )
     thread.start()
 
 @app.get("/protected")
